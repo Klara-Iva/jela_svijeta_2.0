@@ -2,34 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Meal;
+use App\Validators\MealRequestValidator;
+use App\Services\MealQueryBuilder;
+use App\Services\MealRelatedItemsBuilder;
+use App\Services\MealResponseBuilder;
 use Illuminate\Http\Request;
-use App\Models\Language;
 
 class MealController extends Controller
 {
-    public function index(Request $request)
-    {
-        $langCode = $request->input('lang', 'en');
-        $language = Language::where('code', $langCode)->first();
-        $languageId = $language ? $language->id : null;
-        if (!$languageId)
-            abort(404);
+    
+public function index(Request $request)
+{
+    $validated = MealRequestValidator::validate($request);
 
-        $meals = Meal::with([
-            'translations' => function ($query) use ($languageId) {
-                $query->where('language_id', $languageId);
-            },
-            'category.translations' => function ($query) use ($languageId) {
-                $query->where('language_id', $languageId);
-            },
-            'tags.translations' => function ($query) use ($languageId) {
-                $query->where('language_id', $languageId);
-            },
-            'ingredients.translations' => function ($query) use ($languageId) {
-                $query->where('language_id', $languageId);
-            }
-        ])->get();
-        return view('index', ['meals' => $meals]);
-    }
+    $paginator = MealQueryBuilder::build($validated)->appends($request->except('page'));
+    
+    $meals = MealRelatedItemsBuilder::build($paginator, $validated['lang'], $validated['with']);
+
+    return view('index', [
+        'meals' => $meals,
+        'meta' => [
+            'currentPage' => $meals->currentPage(),
+            'totalItems' => $meals->total(),
+            'itemsPerPage' => $meals->perPage(),
+            'totalPages' => $meals->lastPage(),
+        ],
+        'request' => $request->all(),
+    ]);
+}
+
+    
 }

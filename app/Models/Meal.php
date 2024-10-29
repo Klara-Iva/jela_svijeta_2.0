@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Tag;
 use App\Models\Category;
 use App\Models\Ingredient;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Meal extends Model implements TranslatableContract
 {
     use Translatable;
+    use SoftDeletes;
 
     protected $fillable = ['category_id'];
     public $translatedAttributes = ['title', 'description'];

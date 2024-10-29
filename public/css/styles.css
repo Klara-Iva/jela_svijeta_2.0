@@ -1,44 +1,107 @@
-body {
-    font-family: Arial, sans-serif;
+* {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f9;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .container {
-    width: 80%;
-    margin: auto;
-    overflow: hidden;
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    text-align: center;
 }
 
 h1 {
-    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em;
     color: #333;
+}
+
+.no-meals {
+    font-size: 1.2em;
+    color: #999;
     margin-top: 20px;
 }
 
-table {
+.meal-table {
     width: 100%;
     border-collapse: collapse;
-    margin: 20px 0;
-    background-color: #fff;
+    margin-bottom: 20px;
+    margin-top: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-table th, table td {
-    border: 1px solid #dddddd;
+.meal-table thead {
+    background-color: #4a90e2;
+    color: #fff;
+}
+
+.meal-table th,
+.meal-table td {
+    padding: 15px;
     text-align: left;
-    padding: 8px;
+    border-bottom: 1px solid #ddd;
 }
 
-table th {
-    background-color: #f2f2f2;
+.meal-table th {
+    font-weight: bold;
+}
+
+.meal-table tbody tr:hover {
+    background-color: #e6f7ff;
+}
+
+.meal-table tbody ul {
+    padding: 0;
+    list-style: none;
+}
+
+.meal-table tbody ul li {
+    background: #f4f4f9;
+    padding: 3px 6px;
+    margin: 3px 0;
+    display: inline-block;
+    border-radius: 5px;
+    color: #4a90e2;
+    font-size: 0.9em;
+}
+
+.pagination {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination .page-item {
+    margin: 0 5px;
+}
+
+.pagination .page-link {
+    padding: 8px 12px;
+    background-color: #f0f0f0;
     color: #333;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
 }
 
-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+.pagination .page-link:hover {
+    background-color: #d1d1d1;
 }
 
-table tr:hover {
-    background-color: #f1f1f1;
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
 }
