@@ -6,11 +6,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meals List</title>
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
     <div class="container">
         <h1>Meals List</h1>
+        <form method="GET" action="{{ route('meals.index') }}" class="filter-form" id="filter-form">
+            <div class="filter-group">
+                <label for="per_page">Items per page:</label>
+                <select id="per_page" name="per_page" onchange="this.form.submit()">
+                    <option value="5" {{ request('per_page') == 5 ? 'selected' : '' }}>5</option>
+                    <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                    <option value="15" {{ request('per_page') == 15 ? 'selected' : '' }}>15</option>
+                    <option value="20" {{ request('per_page') == 20 ? 'selected' : '' }}>20</option>
+                </select>
+            </div>
+            @php
+
+                $withOptions = explode(',', request('with', ''));
+                $selectedTags = explode(',', request('tags', ''));
+                $selectedIngredients = explode(',', request('ingredients', ''));
+                $selectedCategories = explode(',', request('category', ''));
+            @endphp
+
+            <div class="filter-group">
+                <h2>With:</h2>
+                <label><input type="checkbox" name="with[]" value="category" {{ in_array('category', $withOptions) ? 'checked' : '' }}>Categories</label>
+                <label><input type="checkbox" name="with[]" value="tags" {{ in_array('tags', $withOptions) ? 'checked' : '' }}>Tags</label>
+                <label><input type="checkbox" name="with[]" value="ingredients" {{ in_array('ingredients', $withOptions) ? 'checked' : '' }}>Ingredients</label>
+            </div>
+
+            <div class="filter-group">
+                <h2>Tags</h2>
+                @foreach($tags as $tag)
+                    <label>
+                        <input type="checkbox" name="tags[]" value="{{ $tag->id }}" {{ in_array($tag->id, $selectedTags) ? 'checked' : '' }}>
+                        {{ $tag->translations->first()->title }}
+                    </label>
+                @endforeach
+            </div>
+
+            <div class="filter-group">
+                <h2>Ingredients</h2>
+                @foreach($ingredients as $ingredient)
+                    <label>
+                        <input type="checkbox" name="ingredients[]" value="{{ $ingredient->id }}" {{ in_array($ingredient->id, $selectedIngredients) ? 'checked' : '' }}>
+                        {{ $ingredient->translations->first()->title }}
+                    </label>
+                @endforeach
+            </div>
+
+            <div class="filter-group">
+                <h2>Categories</h2>
+                @foreach($categories as $category)
+                    <label>
+                        <input type="checkbox" name="categories[]" value="{{ $category->id }}" {{ in_array($category->id, $selectedCategories) ? 'checked' : '' }}>
+                        {{ $category->translations->first()->title }}
+                    </label>
+                @endforeach
+            </div>
+            <button type="submit" class="submit-btn">Apply Filters</button>
+        </form>
 
         @if(empty($meals))
             <p class="no-meals">No meals found.</p>
@@ -47,7 +104,6 @@
                                         @endforeach
                                     </ul>
                                 @else
-                                    N/A
                                 @endif
                             </td>
                             <td>
@@ -58,7 +114,7 @@
                                         @endforeach
                                     </ul>
                                 @else
-                                    N/A
+
                                 @endif
                             </td>
                         </tr>

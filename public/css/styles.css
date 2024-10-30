@@ -105,3 +105,40 @@ h1 {
     color: #fff;
     border-color: #007bff;
 }
+
+.filter-form {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.filter-group h2 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #4a90e2;
+}
+
+.filter-group label {
+    display: block;
+    font-size: 1em;
+    margin: 5px 0;
+    color: #333;
+}
+
+.submit-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #4a90e2;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background-color: #3a78c2;
+}
