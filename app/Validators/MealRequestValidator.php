@@ -17,7 +17,7 @@ class MealRequestValidator
                 'nullable',
                 function ($attribute, $value, $fail) {
                     if (!in_array($value, ['NULL', '!NULL']) && !ctype_digit($value)) {
-                        abort(400, 'The category field must be NULL, !NULL, or a valid integer.');
+                        abort(400, 'The category field must be NULL, !NULL, or just ONE valid integer.');
                     }
                 }
             ],

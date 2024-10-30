@@ -32,16 +32,16 @@
 
             <div class="filter-group">
                 <h2>With:</h2>
-                <label><input type="checkbox" name="with[]" value="category" {{ in_array('category', $withOptions) ? 'checked' : '' }}>Categories</label>
-                <label><input type="checkbox" name="with[]" value="tags" {{ in_array('tags', $withOptions) ? 'checked' : '' }}>Tags</label>
-                <label><input type="checkbox" name="with[]" value="ingredients" {{ in_array('ingredients', $withOptions) ? 'checked' : '' }}>Ingredients</label>
+                <label><input type="checkbox" name="with" value="category" {{ in_array('category', $withOptions) ? 'checked' : '' }}>Categories</label>
+                <label><input type="checkbox" name="with" value="tags" {{ in_array('tags', $withOptions) ? 'checked' : '' }}>Tags</label>
+                <label><input type="checkbox" name="with" value="ingredients" {{ in_array('ingredients', $withOptions) ? 'checked' : '' }}>Ingredients</label>
             </div>
 
             <div class="filter-group">
                 <h2>Tags</h2>
                 @foreach($tags as $tag)
                     <label>
-                        <input type="checkbox" name="tags[]" value="{{ $tag->id }}" {{ in_array($tag->id, $selectedTags) ? 'checked' : '' }}>
+                        <input type="checkbox" name="tags" value="{{ $tag->id }}" {{ in_array($tag->id, $selectedTags) ? 'checked' : '' }}>
                         {{ $tag->translations->first()->title }}
                     </label>
                 @endforeach
@@ -51,7 +51,7 @@
                 <h2>Ingredients</h2>
                 @foreach($ingredients as $ingredient)
                     <label>
-                        <input type="checkbox" name="ingredients[]" value="{{ $ingredient->id }}" {{ in_array($ingredient->id, $selectedIngredients) ? 'checked' : '' }}>
+                        <input type="checkbox" name="ingredients" value="{{ $ingredient->id }}" {{ in_array($ingredient->id, $selectedIngredients) ? 'checked' : '' }}>
                         {{ $ingredient->translations->first()->title }}
                     </label>
                 @endforeach
@@ -61,11 +61,20 @@
                 <h2>Categories</h2>
                 @foreach($categories as $category)
                     <label>
-                        <input type="checkbox" name="categories[]" value="{{ $category->id }}" {{ in_array($category->id, $selectedCategories) ? 'checked' : '' }}>
+                        <input type="checkbox" name="category" value="{{ $category->id }}" {{ in_array($category->id, $selectedCategories) ? 'checked' : '' }}>
                         {{ $category->translations->first()->title }}
                     </label>
                 @endforeach
+                <label>
+                    <input type="checkbox" name="category" value="NULL" {{ in_array('NULL', $selectedCategories) ? 'checked' : '' }}>
+                    No category
+                </label>
+                <label>
+                    <input type="checkbox" name="category" value="!NULL" {{ in_array('!NULL', $selectedCategories) ? 'checked' : '' }}>
+                    Any category
+                </label>
             </div>
+
             <button type="submit" class="submit-btn">Apply Filters</button>
         </form>
 
@@ -123,6 +132,49 @@
             </table>
         @endif
     </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#per_page').change(function () {
+                updateUrl();
+            });
+
+            $('#filter-form').on('submit', function (e) {
+                e.preventDefault();
+                updateUrl();
+            });
+
+            function updateUrl() {
+                let lang = "{{ request('lang', 'en') }}";
+                let queryParams = {
+                    lang: lang,
+                    per_page: $('#per_page').val()
+                };
+
+                $('.filter-form input[type="checkbox"]:checked').each(function () {
+                    let name = $(this).attr('name');
+                    let value = $(this).val();
+                    if (!queryParams[name]) {
+                        queryParams[name] = [];
+                    }
+
+                    queryParams[name].push(value);
+                });
+
+                for (let key in queryParams) {
+                    if (Array.isArray(queryParams[key])) {
+                        queryParams[key] = queryParams[key].join(',');
+                    }
+
+                }
+
+                let queryString = $.param(queryParams);
+                let actionUrl = "{{ route('meals.index') }}" + '?' + queryString;
+
+                window.location.href = actionUrl;
+            }
+        });
+    </script>
 </body>
 
 </html>
