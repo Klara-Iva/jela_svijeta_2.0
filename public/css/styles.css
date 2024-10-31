@@ -143,3 +143,74 @@ h1 {
 .submit-btn:hover {
     background-color: #3a78c2;
 }
+
+.filter-group label input[type="checkbox"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #4a90e2;
+    border-radius: 4px;
+    margin-right: 8px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.filter-group label input[type="checkbox"]:checked {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+}
+
+.filter-group label input[type="checkbox"]:checked::after {
+    content: '✓';
+    color: white;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.8em;
+}
+
+#per_page {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#per_page:hover {
+    background-color: #f0f4f9;
+    border-color: #4a90e2;
+}
+
+#per_page option {
+    background-color: #fff;
+    color: #333;
+}
+
+#diff_date {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+#diff_date:hover {
+    background-color: #f0f4f9;
+    border-color: #4a90e2;
+}
+.filter-group label:hover {
+    color: #4a90e2;
+}
+
+.filter-group label input[type="checkbox"]:focus {
+    outline: none;
+    border-color: #3a78c2;
+    box-shadow: 0 0 4px rgba(74, 144, 226, 0.6);
+}

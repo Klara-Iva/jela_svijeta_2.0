@@ -13,6 +13,16 @@
     <div class="container">
         <h1>Meals List</h1>
         <form method="GET" action="{{ route('meals.index') }}" class="filter-form" id="filter-form">
+            @php
+                use Carbon\Carbon;
+                $diffDate = request('diff_time') ? Carbon::createFromTimestamp(request('diff_time'))->format('Y-m-d') : '';
+            @endphp
+
+            <div class="filter-group">
+                <label for="diff_date">Date:</label>
+                <input type="date" id="diff_date" name="diff_date" value="{{ $diffDate }}">
+            </div>
+
             <div class="filter-group">
                 <label for="per_page">Items per page:</label>
                 <select id="per_page" name="per_page" onchange="this.form.submit()">
@@ -145,7 +155,7 @@
             });
 
             function updateUrl() {
-                let lang = "{{ request('lang', 'en') }}";
+                let lang = "{{ request('lang') }}";
                 let queryParams = {
                     lang: lang,
                     per_page: $('#per_page').val()
@@ -160,6 +170,12 @@
 
                     queryParams[name].push(value);
                 });
+
+                let selectedDate = $('#diff_date').val();
+                if (selectedDate) {
+                    let timestamp = Math.floor(new Date(selectedDate).getTime() / 1000);
+                    queryParams['diff_time'] = timestamp;
+                }
 
                 for (let key in queryParams) {
                     if (Array.isArray(queryParams[key])) {

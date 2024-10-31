@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Language;
-use App\Models\Meal;
 use App\Validators\MealRequestValidator;
 use App\Services\MealQueryBuilder;
 use App\Services\MealRelatedItemsBuilder;

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use App\Models\Meal;
 use App\Models\MealTranslation;
@@ -19,11 +20,17 @@ class MealSeeder extends Seeder
         $faker = app(Faker::class);
         $languages = Language::all();
         $categories = Category::all();
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $meal = Meal::create([
                 'slug' => $faker->slug,
                 'category_id' => random_int(1, 10) <= 7 ? $categories->random()->id : null,
             ]);
+
+            if (rand(0, 1) === 1) {
+                $meal->status = 'deleted';
+                $meal->deleted_at = Carbon::now()->subYears(rand(0, 10))->subDays(rand(0, 365));
+                $meal->save();
+            }
 
             foreach ($languages as $language) {
                 MealTranslation::create([

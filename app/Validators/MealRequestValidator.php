@@ -8,8 +8,16 @@ class MealRequestValidator
 {
     public static function validate(Request $request)
     {
+        if (!$request->has('lang') || !$request->input('lang')) {
+            abort(400, 'The lang field is required and cannot be empty.');
+        }
+
         $validated = $request->validate([
-            'lang' => 'required|string|size:2',
+            'lang' => [
+                'required',
+                'string',
+                'size:2'
+            ],
             'per_page' => 'sometimes|nullable|integer|min:1',
             'page' => 'sometimes|nullable|integer|min:1',
             'category' => [
